@@ -1,0 +1,7 @@
+#main {
+  -fx-background-color: #cccccc;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}

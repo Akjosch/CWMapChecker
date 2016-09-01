@@ -1,0 +1,18 @@
+.bordered-titled-title {
+  -fx-background-color: #cccccc;
+  -fx-translate-y: -10;
+  -fx-translate-x: 10;
+}
+
+.bordered-titled-border {
+  -fx-content-display: top;
+  -fx-border-insets: 20 10 10 10, 19 9 11 11;
+  -fx-background-color: #cccccc;
+  -fx-border-color: #eeeeee, #777777;
+  -fx-border-width: 1, 1;
+}
+
+.bordered-titled-content {
+  -fx-padding: 15 5 5 5;
+  -fx-background-color: transparent;
+}

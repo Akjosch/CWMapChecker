@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import de.vernideas.cwmapchecker.controls.*?>
+
+<BorderPane id="main" fx:controller="de.vernideas.cwmapchecker.MainWindow" xmlns:fx="http://javafx.com/fxml">
+	<center>
+		<ScrollPane fx:id="mapImagePane" pannable="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
+			<ImageView fx:id="mapImage" smooth="false" pickOnBounds="true"
+				onMouseClicked="#handleImageMouseClick" onScroll="#handleImageScroll" />
+		</ScrollPane>
+	</center>
+	<left>
+		<VBox maxHeight="Infinity">
+			<children>
+				<TitledBorder title="Province data" maxHeight="Infinity" VBox.vgrow="ALWAYS">
+					<content>
+						<VBox VBox.vgrow="ALWAYS">
+							<children>
+								<ComboBox fx:id="provSelector" maxWidth="Infinity" onAction="#handleProvSelection"/>
+								<TabPane maxHeight="Infinity" VBox.vgrow="ALWAYS">
+									<tabs>
+										<Tab text="Info" closable="false">
+											<GridPane hgap="10" vgap="5" maxHeight="Infinity" style="-fx-border-color: #eeeeee;">
+												<columnConstraints>
+													<ColumnConstraints hgrow="ALWAYS" />
+												</columnConstraints>
+												<padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+												<Label text="Id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+												<Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+												<Label text="Colours" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+												<Label text="  Red" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+												<Label text="  Green" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+												<Label text="  Blue" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+												<Label text="Size" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+												<Label text="Avg. X" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+												<Label text="Avg. Y" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+												<TextField fx:id="textId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+												<TextField fx:id="textName" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+												<Label fx:id="labelColor" text="    " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+												<TextField fx:id="textRed" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+												<TextField fx:id="textGreen" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+												<TextField fx:id="textBlue" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+												<TextField fx:id="textSize" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+												<TextField fx:id="textAvgX" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+												<TextField fx:id="textAvgY" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+											</GridPane>
+										</Tab>
+										<Tab text="History" closable="false">
+											<TextArea prefColumnCount="20" prefRowCount="12" editable="false" maxHeight="Infinity" style="-fx-border-color: #eeeeee;"/>
+										</Tab>
+									</tabs>
+								</TabPane>
+							</children>
+						</VBox>
+					</content>
+				</TitledBorder>
+				<TitledBorder title="Province errors">
+					<content>
+						<TextArea prefColumnCount="20" prefRowCount="12" editable="false" />
+					</content>
+				</TitledBorder>
+			</children>
+		</VBox>
+	</left>
+	<top>
+	   	<MenuBar fx:id="menuBar" onKeyPressed="#handleKeyInput">
+	      <menus>
+	         <Menu mnemonicParsing="false" text="File">
+	            <items>
+	               <MenuItem text="Open ..." accelerator="Ctrl+O" onAction="#handleOpen"/>
+	               <MenuItem text="Save errors ..." accelerator="Ctrl+S" disable="true" onAction="#handleSaveErrors"/>
+	               <MenuItem text="Quit" accelerator="Alt+F4" onAction="#handleQuit"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Data" disable="true">
+	            <items>
+	               <MenuItem mnemonicParsing="false" text="Province list ..." onAction="#handleProvinceList"/>
+	               <MenuItem mnemonicParsing="false" text="Error list ..." onAction="#handleErrorList"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Help">
+	            <items>
+	               <MenuItem mnemonicParsing="false" text="About" onAction="#handleAbout"/>
+	            </items>
+	         </Menu>
+	      </menus>
+		</MenuBar>
+   	</top>
+   	<bottom>
+   		<Label fx:id="statusLabel" text="" />
+   	</bottom>
+</BorderPane>
