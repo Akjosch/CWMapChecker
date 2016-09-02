@@ -11,7 +11,7 @@
 <BorderPane id="main" fx:controller="de.vernideas.cwmapchecker.MainWindow" xmlns:fx="http://javafx.com/fxml">
 	<center>
 		<ScrollPane fx:id="mapImagePane" pannable="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
-			<ImageView fx:id="mapImage" smooth="false" pickOnBounds="true"
+			<PixelatedImageView fx:id="mapImage" smooth="false" pickOnBounds="true"
 				onMouseClicked="#handleImageMouseClick" onScroll="#handleImageScroll" />
 		</ScrollPane>
 	</center>

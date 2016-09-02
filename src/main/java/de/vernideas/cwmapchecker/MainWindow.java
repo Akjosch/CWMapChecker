@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import de.vernideas.cwmapchecker.data.Province;
 import javafx.beans.value.ChangeListener;
@@ -20,8 +21,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -42,6 +41,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 
 public final class MainWindow implements Initializable {
+	private static final Pattern IGNORED_PROVINCE_LINES = Pattern.compile("^;*$");
+	
 	@FXML private MenuBar menuBar;
 	@FXML private ComboBox<Province> provSelector;
 	@FXML private TextField textId;
@@ -74,7 +75,8 @@ public final class MainWindow implements Initializable {
 			emptyProvinces.clear();
 			emptyProvinceColors.clear();
 			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.forName("Windows-1252")))) {
-				String line = null;
+				// Skip first line
+				String line = reader.readLine();
 				while(null != (line = reader.readLine())) {
 					try {
 						Province prov = new Province(line);
@@ -88,7 +90,10 @@ public final class MainWindow implements Initializable {
 						}
 					} catch(IllegalArgumentException iaex) {
 						// Ignore stuff?
-						iaex.printStackTrace();
+						//iaex.printStackTrace();
+						if(!IGNORED_PROVINCE_LINES.matcher(line).matches()) {
+							System.err.println(String.format("Unparsable province line: %s", line));
+						}
 					}
 				}
 			} catch(IOException e) {
@@ -206,8 +211,8 @@ public final class MainWindow implements Initializable {
 	
 	@FXML private void handleImageMouseClick(final MouseEvent event) {
 		if(event.isStillSincePress() && event.getButton().equals(MouseButton.PRIMARY)) {
-			int x = (int) (event.getX() / currentScale + 0.5);
-			int y = (int) (event.getY() / currentScale + 0.5);
+			int x = (int) (event.getX() / currentScale);
+			int y = (int) (event.getY() / currentScale);
 			Color c = mapImage.getImage().getPixelReader().getColor(x, y);
 			if(provinceColors.containsKey(c)) {
 				Province prov = provinceColors.get(c);
