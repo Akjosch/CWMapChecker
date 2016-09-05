@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 @SuppressWarnings("restriction")
 public class PixelatedImageView extends ImageView {
 	@Override protected NGNode impl_createPeer() {
-		// TODO Auto-generated method stub
 		return new NGImageView() {
 			private Image image;
 			
@@ -30,5 +29,4 @@ public class PixelatedImageView extends ImageView {
 			}
 		};
 	}
-
 }
