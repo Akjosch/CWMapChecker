@@ -116,6 +116,7 @@ public final class MainWindow implements Initializable {
 					analyzeImage(img);
 				}
 				mapImage.setImage(img);
+				recalcPaneLimits();
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
@@ -123,6 +124,11 @@ public final class MainWindow implements Initializable {
 			
 			provErrors.setText(badPixels.stream().map(BadPixel::toString).collect(Collectors.joining("\n")));
 		}
+	}
+	
+	private void recalcPaneLimits() {
+		mapImagePane.setHmax(mapImage.getImage().getWidth());
+		mapImagePane.setVmax(mapImage.getImage().getHeight());
 	}
 	
 	@FXML private void handleSaveErrors(final ActionEvent event) {
@@ -190,8 +196,8 @@ public final class MainWindow implements Initializable {
 		Province prov = provSelector.getValue();
 		if(null != prov) {
 			if(!preventSelectionScroll) {
-				mapImagePane.setVvalue(1.0 * prov.getY() / mapImage.getImage().getHeight());
-				mapImagePane.setHvalue(1.0 * prov.getX() / mapImage.getImage().getWidth());
+				mapImagePane.setVvalue(prov.getY());
+				mapImagePane.setHvalue(prov.getX());
 			}
 			textId.setText(Integer.toString(prov.getId()));
 			textName.setText(prov.getName());
@@ -224,12 +230,16 @@ public final class MainWindow implements Initializable {
 	}
 	
 	@FXML private void handleImageScroll(final ScrollEvent event) {
+		double vertical = mapImagePane.getVvalue();
+		double horizontal = mapImagePane.getHvalue();
 		currentScale *= Math.pow(1.001, event.getDeltaY());
 
         mapImage.setFitWidth(mapImage.getImage().getWidth() * currentScale);
         mapImage.setFitHeight(mapImage.getImage().getHeight() * currentScale);
         mapImagePane.setContent(null);
         mapImagePane.setContent(mapImage);
+        mapImagePane.setHvalue(horizontal);
+        mapImagePane.setVvalue(vertical);
         event.consume();
 	}
 
