@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.vernideas</groupId>
   <artifactId>cwmapchecker</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <build>
     <plugins>
       <plugin>
@@ -13,6 +13,33 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>single</goal>
+					</goals>
+					<configuration>
+						<appendAssemblyId>false</appendAssemblyId>
+					</configuration>
+				</execution>
+			</executions>
+			<configuration>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+				<archive>
+					<index>true</index>
+					<manifest>
+						<addClasspath>true</addClasspath>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						<mainClass>de.vernideas.cwmapchecker.MapChecker</mainClass>
+					</manifest>
+				</archive>
+			</configuration>
+		</plugin>
     </plugins>
   </build>
   <dependencies>
