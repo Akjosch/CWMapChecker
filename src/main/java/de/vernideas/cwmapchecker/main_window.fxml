@@ -62,7 +62,7 @@
 				</TitledBorder>
 				<TitledBorder title="Province errors">
 					<content>
-						<TextArea prefColumnCount="20" prefRowCount="12" editable="false" />
+						<TextArea prefColumnCount="20" prefRowCount="12" editable="false" fx:id="provErrors" />
 					</content>
 				</TitledBorder>
 			</children>

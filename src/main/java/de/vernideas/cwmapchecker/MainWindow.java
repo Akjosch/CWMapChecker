@@ -1,11 +1,6 @@
 package de.vernideas.cwmapchecker;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -14,18 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import de.vernideas.cwmapchecker.data.BadPixel;
 import de.vernideas.cwmapchecker.data.Province;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -54,6 +47,7 @@ public final class MainWindow implements Initializable {
 	@FXML private TextField textSize;
 	@FXML private TextField textAvgX;
 	@FXML private TextField textAvgY;
+	@FXML private TextArea provErrors;
 	@FXML private ScrollPane mapImagePane;
 	@FXML private ImageView mapImage;
 	@FXML private Label statusLabel;
@@ -65,6 +59,7 @@ public final class MainWindow implements Initializable {
 	private Map<Color, Province> provinceColors = new HashMap<>();
 	private List<Province> emptyProvinces = new ArrayList<>();
 	private Map<Color, Province> emptyProvinceColors = new HashMap<>();
+	private List<BadPixel> badPixels = new ArrayList<>();
 	private boolean preventSelectionScroll;
 
 	@FXML private void handleOpen(final ActionEvent event) {
@@ -74,6 +69,7 @@ public final class MainWindow implements Initializable {
 			provinceColors.clear();
 			emptyProvinces.clear();
 			emptyProvinceColors.clear();
+			badPixels.clear();
 			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.forName("Windows-1252")))) {
 				// Skip first line
 				String line = reader.readLine();
@@ -123,6 +119,9 @@ public final class MainWindow implements Initializable {
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
+			
+			
+			provErrors.setText(badPixels.stream().map(BadPixel::toString).collect(Collectors.joining("\n")));
 		}
 	}
 	
@@ -168,6 +167,7 @@ public final class MainWindow implements Initializable {
 				} else if(color.equals(Color.BLACK) || color.equals(Color.WHITE)) {
 					// Terra incognita and wasteland; ignore
 				} else {
+					badPixels.add(new BadPixel(x, y, color));
 					System.err.println(String.format("Unknown color %.0f;%.0f;%.0f at %d,%d",
 						color.getRed() * 255, color.getGreen() * 255, color.getBlue() * 255, x, y));
 				}
